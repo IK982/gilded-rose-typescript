@@ -47,19 +47,27 @@ const getUpdatedBackstagePassQuality = (item: Item): number => {
     if(newQuality >= 50) {
         newQuality = 50;
     }
+
+    if (item.sellIn <= 0) {
+        newQuality = 0;
+    }
     return newQuality;
 }
 
 const getUpdatedAgedBrieQuality = (item: Item): number => {
-    if (item.quality >= 50) {
-        return 50;
+    let newQuality = item.quality + 1;
+    if(item.sellIn <= 0) {
+        newQuality ++;
     }
-    return item.quality +1;
+    if (newQuality >= 50) {
+        newQuality = 50;
+    }
+    return newQuality;
 }
+
+
 const getUpdatedQuality = (item: Item): number => {
-    // if (isRegularItem(item)) {
-    //     return getUpdatedRegularItemQuality(item);
-    // }
+   
 
     if (isLegendary(item)) {
         return item.quality;
@@ -87,14 +95,11 @@ export const updateQuality = (items: Item[]): Item[] => {
                             item.quality = item.quality - 1;
                         }
                     }
-                } else {
-                    item.quality = item.quality - item.quality;
-                }
-            } else {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
-                }
-            }
+                } 
+                // else {
+                //     item.quality = item.quality - item.quality;
+                // }
+            } 
         }
     });
 

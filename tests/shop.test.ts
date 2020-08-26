@@ -74,21 +74,33 @@ describe("The update item function", () => {
                 const updatedItems = updateQuality(items);
                 expect(updatedItems[0].quality).toBe(50);
             });
+
+            it("the quality is 0 when it expires", () => {
+                const items = [{ name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 0, quality: 50}];
+                const updatedItems = updateQuality(items);
+                expect(updatedItems[0].quality).toBe(0);
+            });
+
         })
         describe ("of Aged Brie", () => {
             it("by increasing the quality by 1 up to 50", () => {
-                const items = [{name: "Aged Bried", sellIn: 20, quality: 20}];
+                const items = [{name: "Aged Brie", sellIn: 20, quality: 20}];
                 const updatedItems = updateQuality(items);
                 expect(updatedItems[0].quality).toBe(21);
             });
 
             it("quality does not go above 50", () => {
-                const items = [{name: "Aged Bried", sellIn: 20, quality: 50}];
+                const items = [{name: "Aged Brie", sellIn: 20, quality: 50}];
                 const updatedItems = updateQuality(items);
                 expect(updatedItems[0].quality).toBe(50);
             });
 
-    
+            it("if expired add 2 up to 50", () => {
+                const items = [{name: "Aged Brie", sellIn: 0, quality: 20}];
+                const updatedItems = updateQuality(items);
+                expect(updatedItems[0].quality).toBe(22);
+            });
+
         })
 
     })
