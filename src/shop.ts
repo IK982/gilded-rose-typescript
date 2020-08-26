@@ -23,9 +23,9 @@ const getUpdatedSellIn = (item: Item): number => {
     return item.sellIn - 1;
 }
 
-const isRegularItem = (item: Item): boolean => {
-    return !isLegendary(item) && !isAgedBrie(item) && !isBackstagePass(item)
-}
+// const isRegularItem = (item: Item): boolean => {
+//     return !isLegendary(item) && !isAgedBrie(item) && !isBackstagePass(item)
+// }
 
 const getUpdatedRegularItemQuality = (item: Item): number => {
     if (item.quality > 0) {
@@ -34,31 +34,45 @@ const getUpdatedRegularItemQuality = (item: Item): number => {
     return 0;
 }
 
-const getUpdatedQuality = (item: Item): number => {
-    if (isRegularItem(item)) {
-        return getUpdatedRegularItemQuality(item);
-    }
+const getUpdatedBackstagePassQuality = (item: Item): number => {
     
+    let newQuality = item.quality + 1;
+    if (item.sellIn < 11) {
+        newQuality++;
+    }
+
+    if (item.sellIn < 6) {
+        newQuality++;
+    }
+    if(newQuality >= 50) {
+        newQuality = 50;
+    }
+    return newQuality;
+}
+
+const getUpdatedAgedBrieQuality = (item: Item): number => {
+    if (item.quality >= 50) {
+        return 50;
+    }
+    return item.quality +1;
+}
+const getUpdatedQuality = (item: Item): number => {
+    // if (isRegularItem(item)) {
+    //     return getUpdatedRegularItemQuality(item);
+    // }
+
     if (isLegendary(item)) {
         return item.quality;
     }
-    
-    if (item.quality < 50) {
-        item.quality = item.quality + 1;
-        if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (item.sellIn < 11) {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
-                }
-            }
-            if (item.sellIn < 6) {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
-                }
-            }
-        }
+    if(isAgedBrie(item)) {
+        return getUpdatedAgedBrieQuality(item);
     }
-    return item.quality;
+
+    if (isBackstagePass(item)) {
+        return getUpdatedBackstagePassQuality(item);
+       }
+    
+       return getUpdatedRegularItemQuality(item); 
 }
 
 export const updateQuality = (items: Item[]): Item[] => {
