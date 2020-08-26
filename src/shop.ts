@@ -23,6 +23,10 @@ const getUpdatedSellIn = (item: Item): number => {
     return item.sellIn - 1;
 }
 
+const isConjuredItem = (item: Item): boolean => {
+    return item.name === 'Conjured Items';
+}
+
 // const isRegularItem = (item: Item): boolean => {
 //     return !isLegendary(item) && !isAgedBrie(item) && !isBackstagePass(item)
 // }
@@ -38,20 +42,20 @@ const getUpdatedSellIn = (item: Item): number => {
 
 
 const getUpdatedRegularItemQuality = (item: Item): number => {
-    let newQuality = item.quality -1;
-    
+    let newQuality = item.quality - 1;
 
-    if(isExpired(item )){
-        newQuality --;
+
+    if (isExpired(item)) {
+        newQuality--;
     }
-    if(newQuality <= 0){
+    if (newQuality <= 0) {
         newQuality = 0;
     }
     return newQuality;
 }
 
 const getUpdatedBackstagePassQuality = (item: Item): number => {
-    
+
     let newQuality = item.quality + 1;
     if (item.sellIn < 11) {
         newQuality++;
@@ -60,7 +64,7 @@ const getUpdatedBackstagePassQuality = (item: Item): number => {
     if (item.sellIn < 6) {
         newQuality++;
     }
-    if(newQuality >= 50) {
+    if (newQuality >= 50) {
         newQuality = 50;
     }
 
@@ -68,10 +72,8 @@ const getUpdatedBackstagePassQuality = (item: Item): number => {
         newQuality = 0;
     }
 
-    // if (item.sellIn <= 0) {
-    //     newQuality = item.quality - item.quality;
-    // }
-    if(isExpired(item)) {
+    
+    if (isExpired(item)) {
         newQuality = 0
     }
     return newQuality;
@@ -86,8 +88,8 @@ const isExpired = (item: Item): boolean => {
 
 const getUpdatedAgedBrieQuality = (item: Item): number => {
     let newQuality = item.quality + 1;
-    if(item.sellIn <= 0) {
-        newQuality ++;
+    if (item.sellIn <= 0) {
+        newQuality++;
     }
     if (newQuality >= 50) {
         newQuality = 50;
@@ -97,27 +99,43 @@ const getUpdatedAgedBrieQuality = (item: Item): number => {
 
 
 const getUpdatedQuality = (item: Item): number => {
-   
+
 
     if (isLegendary(item)) {
         return item.quality;
     }
-    if(isAgedBrie(item)) {
+    if (isAgedBrie(item)) {
         return getUpdatedAgedBrieQuality(item);
     }
 
     if (isBackstagePass(item)) {
         return getUpdatedBackstagePassQuality(item);
-       }
-    
-       return getUpdatedRegularItemQuality(item); 
+    }
+
+    if (isConjuredItem(item)) {
+        return getUpdatedConjuredItemQuality(item);
+    }
+
+    return getUpdatedRegularItemQuality(item);
+}
+
+const getUpdatedConjuredItemQuality = (item: Item): number => {
+    let newQuality = item.quality - 2;
+
+    if (isExpired(item)) {
+        newQuality = newQuality - 2
+    }
+    if (newQuality <= 0) {
+        newQuality = 0
+    }
+    return newQuality;
 }
 
 export const updateQuality = (items: Item[]): Item[] => {
     items.forEach((item: Item) => {
         item.quality = getUpdatedQuality(item);
         item.sellIn = getUpdatedSellIn(item);
-       
+
     });
 
     return items;

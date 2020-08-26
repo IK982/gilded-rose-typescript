@@ -5,5 +5,6 @@
   { "name": "Elixir of the Mongoose", "sellIn": 5, "quality": 7 },
   { "name": "Sulfuras, Hand of Ragnaros", "sellIn": 0, "quality": 80 },
   { "name": "Goblin Bow", "sellIn":  8, "quality":  10},
-  { "name": "Backstage passes to a TAFKAL80ETC concert", "sellIn": 15, "quality": 20 }
+  { "name": "Backstage passes to a TAFKAL80ETC concert", "sellIn": 15, "quality": 20 },
+  { "name": "Conjured Item 1", "sellIn":  8, "quality":  10}
 ]
