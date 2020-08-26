@@ -50,5 +50,13 @@ describe("The update item function", () => {
                 expect(updatedItems[0].quality).toBe(20);
             })
         })
+
+        describe("of backstage passes", () => {
+            it("by increasing it by 1", () => {
+                const items = [{name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 10, quality: 20}];
+                const updatedItems = updateQuality(items);
+                expect(updatedItems[0].quality).toBe(22);
+            })
+        })
     })
 });

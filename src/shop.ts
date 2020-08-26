@@ -2,7 +2,7 @@
     name: string;
     quality: number;
     sellIn: number;
-}﻿
+}
 
 const isLegendary = (item: Item): boolean => {
     return item.name === 'Sulfuras, Hand of Ragnaros';
