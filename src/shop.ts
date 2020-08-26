@@ -27,11 +27,27 @@ const getUpdatedSellIn = (item: Item): number => {
 //     return !isLegendary(item) && !isAgedBrie(item) && !isBackstagePass(item)
 // }
 
+// const isNotAgedBrieOrBackstagePass = (item: Item): boolean => {
+//     return !isAgedBrie(item) && !isBackstagePass(item)
+// }
+
+// const isNotLegendaryItem = (item: Item): boolean => {
+//     return !isAgedBrie(item) && !isBackstagePass(item)
+// }
+
+
+
 const getUpdatedRegularItemQuality = (item: Item): number => {
-    if (item.quality > 0) {
-        return item.quality - 1;
+    let newQuality = item.quality -1;
+    
+
+    if(isExpired(item )){
+        newQuality --;
     }
-    return 0;
+    if(newQuality <= 0){
+        newQuality = 0;
+    }
+    return newQuality;
 }
 
 const getUpdatedBackstagePassQuality = (item: Item): number => {
@@ -51,7 +67,21 @@ const getUpdatedBackstagePassQuality = (item: Item): number => {
     if (item.sellIn <= 0) {
         newQuality = 0;
     }
+
+    // if (item.sellIn <= 0) {
+    //     newQuality = item.quality - item.quality;
+    // }
+    if(isExpired(item)) {
+        newQuality = 0
+    }
     return newQuality;
+}
+
+const isExpired = (item: Item): boolean => {
+    if (item.sellIn <= 0) {
+        return true;
+    }
+    return false;
 }
 
 const getUpdatedAgedBrieQuality = (item: Item): number => {
@@ -87,20 +117,7 @@ export const updateQuality = (items: Item[]): Item[] => {
     items.forEach((item: Item) => {
         item.quality = getUpdatedQuality(item);
         item.sellIn = getUpdatedSellIn(item);
-        if (item.sellIn < 0) {
-            if (item.name != 'Aged Brie') {
-                if (item.name != 'Backstage passes to a TAFKAL80ETC concert') {
-                    if (item.quality > 0) {
-                        if (item.name != 'Sulfuras, Hand of Ragnaros') {
-                            item.quality = item.quality - 1;
-                        }
-                    }
-                } 
-                // else {
-                //     item.quality = item.quality - item.quality;
-                // }
-            } 
-        }
+       
     });
 
     return items;
